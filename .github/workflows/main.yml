@@ -1,15 +1,29 @@
+name: Тестирование
+
 on:
   push:
-    branches: ['main', 'dev']
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
+        node: [10, 12, 14]
 
+    steps:
+      - uses: actions/checkout@v2  # Клонируем репозиторий
+
+      - name: Использование Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}  # Устанавливаем нужную версию Node.js
+
+      - run: npm ci  # Устанавливаем зависимости (чистая установка)
+
+      - run: |  # Выполняем сборку и тесты
+          npm run build
+          npm test
