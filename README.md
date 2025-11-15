@@ -1,2 +1,2 @@
 
-https://github.com/VladimirKula/first-project
+https://github.com/VladimirKula/ono-tebe-nado-fd
